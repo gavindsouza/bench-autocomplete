@@ -2,7 +2,7 @@
 
 ## Installation
 
-Add the following line to your `.zshrc`
+Add the following line to the end of your `.zshrc`
 
 ```sh
 rm -f ~/.zcompdump; compinit
