@@ -20,4 +20,4 @@ Copy the `_bench.old` to `/usr/local/share/zsh/site-functions/_bench` (on macOS)
 cp zsh/_bench.old /usr/local/share/zsh/site-functions/_bench
 ```
 
-You can also create a sylink
+You can also create a symlink
