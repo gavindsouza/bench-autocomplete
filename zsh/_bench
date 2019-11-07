@@ -1,0 +1,196 @@
+#compdef _bench bench
+
+function __bench_help_commands {
+  local -a help_commands
+
+  help_commands=(
+    'backup:backup site'
+    'mariadb:open mariadb shell'
+    'backup-all-sites:backup all sites'
+    'config:change bench configuration'
+    'disable-production:Disables production environment for the bench'
+    'download-translations:Download latest translations'
+    'exclude-app:Exclude app from updating'
+    'get-app:clone an app from the internet and set it up in...'
+    'include-app:Include app from updating'
+    'init:Create a New Bench Instance'
+    'install:Install system dependancies'
+    'migrate-env:Migrate Virtual Environment to desired Python...'
+    'new-app:start a new app'
+    'prepare-beta-release:Prepare major beta release from develop branch'
+    'release:Release app (internal to the Frappe team)'
+    'remote-reset-url:Reset app remote url to frappe official'
+    'remote-set-url:Set app remote url'
+    'remote-urls:Show apps remote url'
+    'remove-app:completely remove app from bench'
+    'renew-lets-encrypt:Renew Lets Encrypt certificate'
+    'restart:Restart supervisor processes or systemd units'
+    'retry-upgrade:Retry upgrade'
+    'set-default-site:Set default site for bench'
+    'set-mariadb-host:Set MariaDB host for bench'
+    'set-nginx-port:Set nginx port for site'
+    'set-ssl-certificate:Set ssl certificate path for site'
+    'set-ssl-key:Set ssl certificate private key path for site'
+    'set-url-root:Set url root for site'
+    'setup:Setup bench'
+    'shell:Shell start'
+    'src:Prints bench source folder path, which can be used...'
+    'start:Start Frappe development processes'
+    'switch-to-branch:Switch all apps to specified branch, or specify...'
+    'switch-to-develop:Switch frappe and erpnext to develop branch'
+    'switch-to-master:Switch frappe and erpnext to master branch'
+    'update:Update bench'
+  )
+}
+
+
+function __bench_dev_cheatsheet_general {
+  local -a general_commands
+
+  general_commands=(
+    'version:Show version of all apps'
+    'src:Show bench repo directory'
+    'init:[bench-name] Create a new bench'
+    'update:Pulls changes for bench-repo and all apps, applies patches, builds JS and CSS, and then migrates'
+        # --pull Pull changes in all the apps in bench
+        # --patch Run migrations for all sites in the bench
+        # --build Build JS and CSS artifacts for the bench
+        # --bench Update bench
+        # --requirements Update requirements
+        # --restart-supervisor restart supervisor processes after update
+        # --no-backup Don't take a backup before update
+
+    'restart:Restart all bench services'
+    'backup:Create a backup of the default site Backup will be saved to ~/frappe-bench/sites/{your site}/private/backups/'
+
+    'backup-all-sites:Backup all sites'
+        # --with-files Backup site with files
+        # bench restore Restore
+        # --with-private-files Restore site with private files (Path to tar file)
+        # --with-public-files Restore site with public files (Path to tar file)
+
+    'migrate:read JSON files and make changes to the database accordingly'
+    'migrate-env [python-version] Will migrate the virtual environment to the desired python version'
+    'destroy-all-sessions:Destroys all sessions'
+
+    # bench --site [sitename] set-admin-password [password] Will reset the administrator password
+  )
+}
+
+
+function __bench_dev_cheatsheet_config {
+  local -a config_commands
+
+  config_commands=(
+    # bench config - Change bench configuration
+    # auto_update [on/off] Enable/Disable auto update for bench
+    # dns_multitenant [on/off] Enable/Disable DNS Multitenancy
+    # http_timeout Set http timeout
+    # restart_supervisor_on_update Enable/Disable auto restart of supervisor
+    # serve_default_site Configure nginx to serve the default site on
+    # update_bench_on_update Enable/Disable bench updates on running bench...
+    # bench setup - Setup components
+    # auto-update Add cronjob for bench auto update
+    # backups Add cronjob for bench backups
+    # config overwrite or make config.json
+    # env Setup virtualenv for bench
+    # nginx generate config for nginx
+    # procfile Setup Procfile for bench start
+    # production setup bench for production
+    # redis generate config for redis cache
+    # socketio Setup node deps for socketio server
+    # sudoers Add commands to sudoers list for execution...
+    # supervisor generate config for supervisor
+    # add-domain add custom domain for site
+    # firewall setup firewall and block all ports except 22, 80 and 443
+    # ssh-port change the default ssh connection port
+    # requirementsUpdate Python and Node packages
+    # --node Update only Node packages
+    # --python Update only Python packages
+    # bench set-nginx-port [sitename] [port] - Set site's port in Production
+  )
+}
+
+function __bench_dev_cheatsheet_development {
+  local -a development_commands
+
+  development_commands=(
+    'new-app [app-name:Creates a new app'
+    'get-app [repo-link:Downloads an app from a git repository and installs it'
+    # '--branch [branch-name] Fetches specific branch of app'
+    'install-app:Installs existing app'
+    'remove-from-installed-apps:Remove app from the list of apps'
+    'uninstall-app:Delete app and everything linked to the app (Bench needs to be running)'
+    # 'remove-app [app-name] Remove app from the bench entirely
+    # '--site [sitename] --force reinstall Reinstall with fresh database (Caution:Will wipe out old database)
+    'new-site:Creates a new site'
+    # '--db-name Database name
+    # '--mariadb-root-username Root username for MariaDB
+    # '--mariadb-root-password Root password for MariaDB
+    # '--admin-password Administrator password for new site
+    # '--verbose Verbose
+    # '--force Force restore if site/database already exists
+    # '--source_sql Initiate database with a SQL file
+    # '--install-app Install app after installation`
+    'use:Sets a default site'
+    'drop-site:Removes site from disk and database completely'
+    # '--root-login
+    # '--root-password
+    'set-config [key] [value]:Adds a key-value pair to sites config file'
+    'execute:Execute a method inside any app Eg:bench execute frappe.utils.scheduler.enqueue_scheduler_events'
+
+    '--site [sitename] console:Opens a IPython console in the bench venv'
+    'bench --site [sitename] mariadb:Opens SQL Console'
+    'bench --site [sitename] export-fixtures:Exports fixtures'
+    'bench --site sitename --verbose run-tests'
+    'bench run-tests Run tests'
+    # '--app App Name
+    # '--doctype DocType to run tests for
+    # '--test Specific Test
+    # '--module Run a particular module that has tests
+    # '--profile Runs a Python profiler on the test
+    'bench disable-production:Disables production environment'
+  )
+}
+
+function __bench_dev_cheatsheet_scheduler {
+  local -a scheduler_commands
+
+  scheduler_commands=(
+    'enable-scheduler:Enables Scheduler that will run scheduled tasks'
+    'doctor:Get diagnostic info about background workers'
+    'show-pending-jobs:Get pending jobs'
+    'purge-jobs:Destroy all pending jobs'
+  )
+}
+
+function _bench {
+    local line
+
+    _arguments -C \
+        "--version[Show bench version]" \
+        "--help[Show all commands and help]" \
+        # "--site[(site-name) COMMAND - Specify site for command]"
+        '1:command:->command' \
+        '*::options:->options' && return 0
+
+    case $line[1] in
+        loudly)
+            _hello_loudly
+        ;;
+        quietly)
+            _hello_quietly
+        ;;
+    esac
+}
+
+
+function _hello_quietly {
+    _arguments \
+        "--silent[Dont output anything]"
+}
+
+function _hello_loudly {
+    _arguments \
+        "--repeat=[Repat the <message> any number of times]"
+}
