@@ -9,7 +9,7 @@ Currently we are working only on `zsh` completions. Mostly because it helps vast
 
 
 ```sh
-git clone https://github.com/gavindsouza/bench-autocomplete && cd bench-auto-complete
+git clone https://github.com/gavindsouza/bench-autocomplete && cd bench-autocomplete
 ```
 
 alternativey,
