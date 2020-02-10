@@ -1,0 +1,61 @@
+#compdef bench
+#autoload
+
+# Bench ZSH completion function
+
+{% for group, commands in commands.items() %}
+__bench_{{ group }}_commands() {
+  local -a commands
+  commands=(
+      {%- for command in commands %}
+      '{{ command.name }}:{{ escape(command.help) }}'{% endfor %}
+  )
+  _describe -t {{ group }}-commands '{{ group }} commands' commands
+}
+{% endfor %}
+
+__bench_all_commands() {
+  _alternative \
+  {%- for group, commands in commands.items() %}
+  '{{ group }}-commands:command:__bench_{{ group }}_commands'
+  {%- endfor %}
+}
+
+__bench_commands() {
+  _alternative \
+    {%- for group, commands in commands.items() %}
+    '{{ group }}:command:__bench_{{ group }}_commands' \
+    {%- endfor %}
+    'bench-commands:command:__bench_bench_commands'
+}
+
+__bench_sites_list() {
+  curr_sites=($( ls -l sites | grep '^d' | grep -v 'assets' | awk 'NF{ print $NF }' ))
+  _describe -t curr_sites 'current sites' curr_sites
+}
+
+# the main completion function
+_bench() {
+  local curcontext="$curcontext" state state_descr line expl
+
+  _arguments -C : \
+    '1:command:->command' \
+    '2:sub_command:->sub_command' \
+    '*::options:->options' && return 0
+
+  case "$state" in
+    command)
+      __bench_commands && return 0
+      ;;
+
+    options)
+      _arguments : \
+            "1:--site:__bench_sites_list"
+
+      return 1
+    ;;
+
+  esac
+}
+
+_bench "$@"
