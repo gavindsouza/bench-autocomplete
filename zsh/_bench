@@ -36,6 +36,7 @@ __bench_common_commands() {
     'remove-app:completely remove app from bench'
     'renew-lets-encrypt:Renew Lets Encrypt certificate'
     'restart:Restart supervisor processes or systemd units'
+    'restore:restore a database backup'
     'retry-upgrade:Retry upgrade'
     'set-default-site:Set default site for bench'
     'set-mariadb-host:Set MariaDB host for bench'
@@ -102,6 +103,7 @@ _bench() {
     ['drop-site']=__bench_sites_list
     ['use']=__bench_sites_list
     ['remove-app']=__bench_apps_list
+    ['restore']=_files
   )
 
   case $state in
